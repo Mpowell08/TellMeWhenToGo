@@ -1,0 +1,108 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
+
+    <!-- First Row -->
+    <RelativeLayout 
+        android:id="@+id/top_row_layout"
+        android:layout_alignParentTop="true"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        >
+        <EditText
+            android:id="@+id/top_row_edittext"
+            android:hint="Where are you coming from?"
+        	android:layout_height="wrap_content"
+       		android:layout_width="fill_parent"
+       		android:padding="10dp"
+       		android:layout_alignParentLeft="true"
+             
+            />
+        
+    </RelativeLayout>
+    
+    <!-- Second Row -->
+    <RelativeLayout 
+        android:id="@+id/second_row_layout"
+        android:layout_below="@+id/top_row_layout"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:onClick="TimeRowClicked"
+        >
+
+        <TextView
+            android:id="@+id/second_row_textview"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:padding="10dp"
+            android:text="When do you want to be there?" />
+            
+       	<TextView
+       	    android:id="@+id/second_row_timeview"
+       	    android:layout_width="wrap_content"
+       	    android:layout_height="wrap_content"
+       	    android:layout_alignParentRight="true"
+       	    android:layout_alignParentTop="true"
+       	    android:padding="10dp"
+       	    android:text="12:00PM"
+       	    />
+    </RelativeLayout>
+    <!-- Third Row -->
+    <RelativeLayout 
+        android:id="@+id/third_row_layout"
+        android:layout_below="@+id/second_row_layout"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:onClick="DateRowClicked"
+        >
+        <TextView
+            android:id="@+id/third_row_textview"
+            android:text="What date do you want to be there?"
+        	android:layout_height="wrap_content"
+       		android:layout_width="fill_parent"
+       		android:padding="10dp"
+       		android:layout_alignParentLeft="true"
+             
+            />
+                        
+       	<TextView
+       	    android:id="@+id/third_row_dateview"
+       	    android:layout_width="wrap_content"
+       	    android:layout_height="wrap_content"
+       	    android:layout_alignParentRight="true"
+       	    android:layout_alignParentTop="true"
+       	    android:padding="10dp"
+       	    android:text="01/01/13"
+       	    />
+    </RelativeLayout>
+    <!-- Fourth Row -->
+    <RelativeLayout 
+        android:id="@+id/fourth_row_layout"
+        android:layout_below="@+id/third_row_layout"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        >
+        <EditText
+            android:id="@+id/fourth_row_edittext"
+            android:hint="Where do you want to go?"
+        	android:layout_height="wrap_content"
+       		android:layout_width="fill_parent"
+       		android:padding="10dp"
+       		android:layout_alignParentLeft="true"
+             
+            />
+            
+    </RelativeLayout>
+    
+    <Button 
+        android:id="@+id/done_button"
+        android:layout_alignParentBottom="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Done"
+        />
+</RelativeLayout>
