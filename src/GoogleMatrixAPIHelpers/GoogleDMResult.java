@@ -27,4 +27,9 @@ public class GoogleDMResult {
 		return this.duration_value;
 	}
 	
+	public String toString(){
+		return "Status: " + this.getStatus() + " Origin: " + this.getOrigin() +
+			" Destination " + this.getDestination() + " Time: " + this.getDuration();
+	}
+	
 }

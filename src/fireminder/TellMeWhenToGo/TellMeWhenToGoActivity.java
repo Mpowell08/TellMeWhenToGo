@@ -2,15 +2,19 @@ package fireminder.TellMeWhenToGo;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.concurrent.ExecutionException;
 
 import GoogleMatrixAPIHelpers.GoogleDMQuery;
 import GoogleMatrixAPIHelpers.GoogleDMResult;
 import GoogleMatrixAPIHelpers.QueryExecutor;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +26,7 @@ import android.widget.TimePicker;
 
 public class TellMeWhenToGoActivity extends Activity {
 	
+	GoogleDMResult result;
 	EditText destination_et;
 	EditText origin_et;
 	TextView time_tv;
@@ -72,12 +77,15 @@ public class TellMeWhenToGoActivity extends Activity {
         setContentView(R.layout.activity_main);
         SetupInit();
         
-        GoogleDMQuery query = new GoogleDMQuery("Antioch, CA", "San Francisco");
-        QueryExecutor qe = new QueryExecutor(query);
-        GoogleDMResult result = qe.createResult();
+       // GoogleDMQuery query = new GoogleDMQuery("Antioch, CA", "Walnut Creek");
+     //   QueryExecutor qe = new QueryExecutor(query);
+       // GoogleDMResult result = qe.createResult();
         
         }
     
+    public void onPause(){
+    	super.onPause();
+    }
     public void SetupInit(){
     	destination_et = (EditText) findViewById(R.id.fourth_row_edittext);
     	origin_et = (EditText) findViewById(R.id.top_row_edittext);
@@ -104,5 +112,61 @@ public class TellMeWhenToGoActivity extends Activity {
     	Calendar cal = Calendar.getInstance();
 		TimePickerDialog timePickDiag = new TimePickerDialog(this, otsl, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE),false);
 		timePickDiag.show();
+    }
+    
+    public void OnDoneButtonClicked(View v){
+    	GoogleDMQuery query = new GoogleDMQuery(origin_et.getText().toString(),destination_et.getText().toString());
+    	QueryExecutor qe = new QueryExecutor(query);
+    	GoogleDMResult result = null;
+    	DoTheQuery dtq = (DoTheQuery) new DoTheQuery().execute(qe);
+    	try {
+			result = dtq.get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Calendar calendar = arrivalGen.doMath(result.getDuration());
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yy hh:mm aa");
+		String calendarDateString = dateFormat.format(calendar.getTime());
+    	
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		if(result.getStatus().contains("OK")){
+			builder.setMessage("Going from " + result.getOrigin() + 
+					" to " + result.getDestination() + " will take " + result.getDuration()/60 + " minutes. ");
+	    	builder.setTitle("Set Reminder for " + calendarDateString + "?");
+		} else {
+			builder.setMessage("Sorry, that address was not found.");
+		}
+	    	builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	    	
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+						
+				}
+			});
+		
+    	AlertDialog dialog = builder.create();
+    	dialog.show();
+    	
+    	Log.d("DoneClicked", "" + destination_et.getText().toString());
+    	Log.d("DoneClicked", "" + origin_et.getText().toString());
+    	
+    }
+    private class DoTheQuery extends AsyncTask<QueryExecutor, Void, GoogleDMResult>{
+
+		@Override
+		protected GoogleDMResult doInBackground(QueryExecutor... arg0) {
+			// TODO Auto-generated method stub
+			return arg0[0].createResult();
+		}
+		
+		protected void onPostExecute(GoogleDMResult result){
+	    	Log.d("Results", result.toString());
+		}
+    	
     }
 }

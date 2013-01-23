@@ -25,7 +25,18 @@ public class CalendarArrivalGen{
 	}
 	
 	
-
+	public Calendar doMath(int duration){
+		Calendar arrivalCalendar = Calendar.getInstance();
+		
+		arrivalCalendar.set(Calendar.DAY_OF_MONTH, this.day);
+		arrivalCalendar.set(Calendar.MONTH, this.month);
+		arrivalCalendar.set(Calendar.YEAR, this.year);
+		arrivalCalendar.set(Calendar.HOUR_OF_DAY, this.hour);
+		arrivalCalendar.set(Calendar.MINUTE, this.minute);
+		
+		arrivalCalendar.add(Calendar.SECOND, -1 * duration);
+		return arrivalCalendar;
+	}
 	public long getTimeInMillis(){
 		Calendar arrivalCalendar = Calendar.getInstance();
 		
@@ -37,6 +48,18 @@ public class CalendarArrivalGen{
 		
 		Log.d("timeinmillis", ""+arrivalCalendar.getTimeInMillis());
 		return arrivalCalendar.getTimeInMillis();
+	}
+	
+	public Calendar getDepartureDate(){
+		Calendar arrivalCalendar = Calendar.getInstance();
+		
+		arrivalCalendar.set(Calendar.DAY_OF_MONTH, this.day);
+		arrivalCalendar.set(Calendar.MONTH, this.month);
+		arrivalCalendar.set(Calendar.YEAR, this.year);
+		arrivalCalendar.set(Calendar.HOUR_OF_DAY, this.hour);
+		arrivalCalendar.set(Calendar.MINUTE, this.minute);
+		
+		return arrivalCalendar;
 	}
 	public void setHour(int hour) {
 		this.hour = hour;
